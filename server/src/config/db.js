@@ -1,24 +1,34 @@
 const { Pool } = require('pg');
 
-const connectionString = process.env.DATABASE_URL;
+let pool = null;
 
-const pool = connectionString
-  ? new Pool({
-      connectionString,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    })
-  : null;
+const getPool = () => {
+  if (pool) {
+    return pool;
+  }
 
-const checkDatabaseConnection = async () => {
-  if (!pool) {
+  if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is not set');
   }
 
-  await pool.query('SELECT 1');
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  return pool;
+};
+
+const query = (text, params = []) => getPool().query(text, params);
+
+const checkDatabaseConnection = async () => {
+  await query('SELECT 1');
 };
 
 module.exports = {
+  getPool,
+  query,
   checkDatabaseConnection,
 };
