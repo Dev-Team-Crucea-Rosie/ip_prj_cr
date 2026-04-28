@@ -15,10 +15,19 @@ router.post('/register', async (req, res) => {
     password,
     isCoordinator = false,
     isAdministrator = false,
+    adminToken
   } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({ message: 'firstName, lastName, email and password are required' });
+  }
+
+  // Hardcoded token check for admin/coordinator registration
+  if (isCoordinator || isAdministrator) {
+    const HARDCODED_ADMIN_TOKEN = 'ADMIN_SECRET_2026';
+    if (adminToken !== HARDCODED_ADMIN_TOKEN) {
+      return res.status(403).json({ message: 'Token de administrator invalid' });
+    }
   }
 
   try {
