@@ -32,26 +32,26 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <>
       {/* Desktop Sidebar (Fixed) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-[var(--crr-border)] bg-white shadow-sm transition-transform duration-300 ease-in-out md:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}
       >
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-100">
+        <div className="flex h-16 items-center justify-between border-b border-[var(--crr-border)] px-4">
           <div className="flex items-center justify-center gap-2">
-            <ShieldAlert className="w-6 h-6 text-black" />
-            <span className="text-lg font-bold tracking-tight text-gray-900">
+            <ShieldAlert className="h-6 w-6 text-[var(--crr-red)]" />
+            <span className="text-lg font-bold tracking-tight text-[var(--crr-ink)]">
               Corpul de Voluntari
             </span>
           </div>
           {/* Close button that only displays on Mobile view inside sidebar */}
-          <button onClick={onClose} className="md:hidden text-gray-500 hover:text-black">
+          <button onClick={onClose} className="text-[var(--crr-muted)] transition-colors hover:text-[var(--crr-red)] md:hidden">
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-2">
-          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+          <div className="mb-4 px-2 text-xs font-semibold uppercase tracking-wider text-[var(--crr-red)]">
             {isCoordinator ? 'Meniu Coordonator' : 'Meniu Voluntar'}
           </div>
           
@@ -65,8 +65,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 className={({ isActive }) =>
                   `flex items-center px-2 py-3 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-gray-100 text-black'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-[var(--crr-red-soft)] text-[var(--crr-red-dark)]'
+                      : 'text-[var(--crr-muted)] hover:bg-[var(--crr-red-softer)] hover:text-[var(--crr-red-dark)]'
                   }`
                 }
               >
@@ -78,22 +78,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* User Profile & Logout Bottom Area */}
-        <div className="border-t border-gray-100 p-4">
+        <div className="border-t border-[var(--crr-border)] p-4">
           <div className="flex items-center mb-4 px-2">
-            <div className="bg-gray-200 text-gray-700 font-bold rounded-full w-10 h-10 flex items-center justify-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--crr-red-soft)] font-bold text-[var(--crr-red)]">
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="ml-3 overflow-hidden">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="truncate text-sm font-medium text-[var(--crr-ink)]">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              <p className="truncate text-xs text-[var(--crr-muted)]">{user?.email}</p>
             </div>
           </div>
           
           <button
             onClick={logout}
-            className="flex items-center w-full px-2 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+            className="flex w-full items-center rounded-lg px-2 py-2 text-sm font-medium text-[var(--crr-red)] transition-colors hover:bg-[var(--crr-red-softer)]"
           >
             <LogOut className="w-5 h-5 mr-3" />
             Deconectare

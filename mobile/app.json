@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "CR S3 Mobile",
+    "slug": "cr-s3-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "permissions": ["CAMERA"]
+    },
+    "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow CR S3 mobile app to use your camera for volunteer features."
+      }
+    }
+  }
+}

@@ -113,7 +113,7 @@ export default function QRScanner() {
                   
                   {/* Scanning animation line */}
                   {scanState === 'idle' && (
-                    <div className="absolute w-full h-0.5 bg-red-600 shadow-[0_0_10px_red] top-1/2 left-0 -translate-y-1/2 opacity-70 animate-pulse pointer-events-none" />
+                    <div className="pointer-events-none absolute left-0 top-1/2 h-0.5 w-full -translate-y-1/2 animate-pulse bg-[var(--crr-red)] opacity-80 shadow-[0_0_12px_rgba(245,51,63,0.9)]" />
                   )}
                 </div>
 
@@ -123,16 +123,16 @@ export default function QRScanner() {
             </div>
           </div>
         ) : scanState === 'success' ? (
-          <div className="text-center p-8 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 mx-6">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <div className="mx-6 rounded-2xl border border-[var(--crr-red)] bg-white/15 p-8 text-center backdrop-blur-lg">
+            <CheckCircle className="mx-auto mb-4 h-16 w-16 text-[var(--crr-red)]" />
             <h2 className="text-2xl font-bold text-white mb-2">Prezență Confirmată!</h2>
-            <p className="text-gray-300 text-sm">Transfer către dashboard...</p>
+            <p className="text-sm text-white/85">Transfer către dashboard...</p>
           </div>
         ) : (
-          <div className="text-center p-8 bg-red-900/30 backdrop-blur-lg rounded-2xl border border-red-500/50 mx-6 absolute z-20">
-            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <div className="absolute z-20 mx-6 rounded-2xl border border-[var(--crr-red)] bg-[var(--crr-accent)] p-8 text-center backdrop-blur-lg">
+            <AlertCircle className="mx-auto mb-4 h-16 w-16 text-[var(--crr-red)]" />
             <h2 className="text-xl font-bold text-white mb-2">Eroare Scanare</h2>
-            <p className="text-gray-300 text-sm">{errorMessage}</p>
+            <p className="text-sm text-white/85">{errorMessage}</p>
           </div>
         )}
       </div>
