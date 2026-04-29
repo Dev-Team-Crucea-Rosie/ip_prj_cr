@@ -73,17 +73,17 @@ export default function CoordinatorDashboard() {
   };
 
   if (isLoading) {
-    return <div className="flex h-64 items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>;
+    return <div className="flex h-64 items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-[var(--crr-red)]" /></div>;
   }
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-12">
       <div>
-        <h1 className="text-3xl font-light tracking-tight text-gray-900">Panou Coordonator</h1>
-        <p className="text-gray-500 mt-1">Gestionează proiecte, evenimente și voluntari.</p>
+        <h1 className="text-3xl font-light tracking-tight text-[var(--crr-ink)]">Panou Coordonator</h1>
+        <p className="mt-1 text-[var(--crr-muted)]">Gestionează proiecte, evenimente și voluntari.</p>
       </div>
 
-      <div className="border-b border-gray-200">
+      <div className="border-b border-[var(--crr-border)]">
         <nav className="-mb-px flex space-x-8">
           {(['projects', 'events', 'tasks'] as const).map((tab) => (
             <button
@@ -91,8 +91,8 @@ export default function CoordinatorDashboard() {
               onClick={() => setActiveTab(tab)}
               className={`${
                 activeTab === tab
-                  ? 'border-black text-black'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-[var(--crr-red)] text-[var(--crr-red)]'
+                  : 'border-transparent text-[var(--crr-muted)] hover:border-[var(--crr-border)] hover:text-[var(--crr-red-dark)]'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm capitalize`}
             >
               {tab}
@@ -101,26 +101,26 @@ export default function CoordinatorDashboard() {
         </nav>
       </div>
 
-      <div className="bg-white border rounded-lg p-6 shadow-sm">
+      <div className="rounded-lg border border-[var(--crr-border)] bg-white p-6 shadow-sm">
         {activeTab === 'projects' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-medium tracking-tight text-gray-900">Proiecte Active</h2>
-              <button onClick={() => { setEditingProject(null); setIsProjectModalOpen(true); }} className="flex items-center gap-2 px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded text-sm">
+              <h2 className="text-xl font-medium tracking-tight text-[var(--crr-ink)]">Proiecte Active</h2>
+              <button onClick={() => { setEditingProject(null); setIsProjectModalOpen(true); }} className="flex items-center gap-2 rounded bg-[var(--crr-red)] px-4 py-2 text-sm text-white transition-colors hover:bg-[var(--crr-red-dark)]">
                 <FolderPlus className="w-4 h-4" /> Proiect Nou
               </button>
             </div>
-            {projects.length === 0 ? <p className="text-gray-500 italic text-center py-6">Niciun proiect inregistrat.</p> : (
+            {projects.length === 0 ? <p className="py-6 text-center italic text-[var(--crr-muted)]">Niciun proiect inregistrat.</p> : (
               <ul className="space-y-3">
                 {projects.map(p => (
-                  <li key={p.id} className="border border-gray-100 p-4 rounded hover:border-gray-300 transition-colors flex justify-between items-start">
+                  <li key={p.id} className="flex items-start justify-between rounded border border-[var(--crr-border)] p-4 transition-colors hover:border-[var(--crr-red)]">
                     <div>
-                      <h3 className="font-semibold text-lg text-gray-900">{p.name}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{p.description}</p>
+                      <h3 className="text-lg font-semibold text-[var(--crr-ink)]">{p.name}</h3>
+                      <p className="mt-1 text-sm text-[var(--crr-muted)]">{p.description}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <button onClick={() => { setEditingProject(p); setIsProjectModalOpen(true); }} className="text-gray-400 hover:text-black shrink-0"><Edit2 className="w-4 h-4" /></button>
-                      <button onClick={() => handleDeleteProject(p.id)} className="text-gray-400 hover:text-red-600 shrink-0"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => { setEditingProject(p); setIsProjectModalOpen(true); }} className="shrink-0 text-[var(--crr-muted)] transition-colors hover:text-[var(--crr-red)]"><Edit2 className="h-4 w-4" /></button>
+                      <button onClick={() => handleDeleteProject(p.id)} className="shrink-0 text-[var(--crr-muted)] transition-colors hover:text-[var(--crr-red-dark)]"><Trash2 className="h-4 w-4" /></button>
                     </div>
                   </li>
                 ))}
@@ -130,20 +130,20 @@ export default function CoordinatorDashboard() {
         )}
 
         {activeTab === 'events' && (
-          <div className="space-y-6">
+           <div className="space-y-6">
             <div className="flex items-center justify-between">
-               <h2 className="text-xl font-medium tracking-tight text-gray-900">Evenimente</h2>
-               <button onClick={() => setIsEventModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded text-sm">
+               <h2 className="text-xl font-medium tracking-tight text-[var(--crr-ink)]">Evenimente</h2>
+               <button onClick={() => setIsEventModalOpen(true)} className="flex items-center gap-2 rounded bg-[var(--crr-red)] px-4 py-2 text-sm text-white transition-colors hover:bg-[var(--crr-red-dark)]">
                  <CalendarPlus className="w-4 h-4" /> Eveniment Nou
                </button>
             </div>
-            {events.length === 0 ? <p className="text-gray-500 italic text-center py-6">Niciun eveniment.</p> : (
+            {events.length === 0 ? <p className="py-6 text-center italic text-[var(--crr-muted)]">Niciun eveniment.</p> : (
               <ul className="space-y-3">
                 {events.map(ev => (
-                  <li key={ev.id} className="border border-gray-100 p-4 rounded hover:border-gray-300 transition-colors">
-                     <h3 className="font-semibold text-lg text-gray-900">{ev.name}</h3>
-                     <p className="text-sm text-gray-500 mt-1">Dată: {new Date(ev.date).toLocaleDateString()} | Locație: {ev.location}</p>
-                     <p className="text-xs mt-2 bg-gray-100 inline-block px-2 py-1 rounded text-gray-700">Proiect ID: {ev.projectId}</p>
+                  <li key={ev.id} className="rounded border border-[var(--crr-border)] p-4 transition-colors hover:border-[var(--crr-red)]">
+                     <h3 className="text-lg font-semibold text-[var(--crr-ink)]">{ev.name}</h3>
+                     <p className="mt-1 text-sm text-[var(--crr-muted)]">Dată: {new Date(ev.date).toLocaleDateString()} | Locație: {ev.location}</p>
+                     <p className="mt-2 inline-block rounded bg-[var(--crr-red-softer)] px-2 py-1 text-xs text-[var(--crr-red-dark)]">Proiect ID: {ev.projectId}</p>
                   </li>
                 ))}
               </ul>
@@ -154,23 +154,23 @@ export default function CoordinatorDashboard() {
         {activeTab === 'tasks' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-               <h2 className="text-xl font-medium tracking-tight text-gray-900">Alocări voluntari</h2>
-               <button onClick={() => setIsTaskModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded text-sm">
+               <h2 className="text-xl font-medium tracking-tight text-[var(--crr-ink)]">Alocări voluntari</h2>
+               <button onClick={() => setIsTaskModalOpen(true)} className="flex items-center gap-2 rounded bg-[var(--crr-red)] px-4 py-2 text-sm text-white transition-colors hover:bg-[var(--crr-red-dark)]">
                  <CheckSquare className="w-4 h-4" /> Alocă Voluntar
                </button>
             </div>
-            {tasks.length === 0 ? <p className="text-gray-500 italic text-center py-6">Nicio alocare.</p> : (
+            {tasks.length === 0 ? <p className="py-6 text-center italic text-[var(--crr-muted)]">Nicio alocare.</p> : (
               <ul className="space-y-3">
                 {tasks.map(t => {
                    const vol = volunteers.find(v => v.id === t.volunteer_id);
                    const ev = events.find(e => e.id === t.event_id);
                    return (
-                    <li key={t.id} className="border border-gray-100 p-4 rounded hover:border-gray-300 transition-colors flex justify-between items-center">
+                    <li key={t.id} className="flex items-center justify-between rounded border border-[var(--crr-border)] p-4 transition-colors hover:border-[var(--crr-red)]">
                        <div>
-                         <h3 className="font-medium text-gray-900">{t.description}</h3>
-                         <p className="text-sm text-gray-500 mt-1">Voluntar: {vol ? `${vol.firstName} ${vol.lastName}` : `ID ${t.volunteer_id}`} | Eveniment: {ev?.name || `ID ${t.event_id}`}</p>
+                         <h3 className="font-medium text-[var(--crr-ink)]">{t.description}</h3>
+                         <p className="mt-1 text-sm text-[var(--crr-muted)]">Voluntar: {vol ? `${vol.firstName} ${vol.lastName}` : `ID ${t.volunteer_id}`} | Eveniment: {ev?.name || `ID ${t.event_id}`}</p>
                        </div>
-                       <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 uppercase font-medium rounded">{t.status}</span>
+                       <span className="rounded bg-[var(--crr-red-softer)] px-2 py-1 text-xs font-medium uppercase text-[var(--crr-red-dark)]">{t.status}</span>
                     </li>
                    );
                 })}
