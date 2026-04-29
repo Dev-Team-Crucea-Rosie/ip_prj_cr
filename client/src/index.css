@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+:root {
+  --crr-red: #f5333f;
+  --crr-red-dark: #dc2d38;
+  --crr-red-soft: #ffe4e7;
+  --crr-red-softer: #fff1f3;
+  --crr-accent: #011e41;
+  --crr-bg: #fbfbfb;
+  --crr-surface: #ffffff;
+  --crr-ink: #323232;
+  --crr-muted: #666666;
+  --crr-border: #e1e1e1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--crr-bg);
+  color: var(--crr-ink);
+}

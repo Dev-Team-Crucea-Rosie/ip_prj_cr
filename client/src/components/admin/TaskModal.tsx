@@ -30,34 +30,34 @@ export default function TaskModal({ isOpen, onClose, onRefresh, events, voluntee
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold">Alocare voluntar (Task nou)</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-black"><X className="w-5 h-5"/></button>
+      <div className="w-full max-w-md overflow-hidden rounded-lg border border-[var(--crr-border)] bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-[var(--crr-border)] p-4">
+          <h2 className="text-lg font-semibold text-[var(--crr-ink)]">Alocare voluntar (Task nou)</h2>
+          <button onClick={onClose} className="text-[var(--crr-muted)] transition-colors hover:text-[var(--crr-red)]"><X className="h-5 w-5"/></button>
         </div>
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Eveniment</label>
-            <select required value={eventId} onChange={e => setEventId(e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-black">
+            <label className="mb-1 block text-sm font-medium text-[var(--crr-ink)]">Eveniment</label>
+            <select required value={eventId} onChange={e => setEventId(e.target.value)} className="w-full rounded border border-[var(--crr-border)] px-3 py-2 text-sm focus:border-[var(--crr-red)] focus:ring-[var(--crr-red)]">
               <option value="" disabled>Selectează eveniment...</option>
               {events.map(ev => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Voluntar</label>
-            <select required value={volunteerId} onChange={e => setVolunteerId(e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-black">
+            <label className="mb-1 block text-sm font-medium text-[var(--crr-ink)]">Voluntar</label>
+            <select required value={volunteerId} onChange={e => setVolunteerId(e.target.value)} className="w-full rounded border border-[var(--crr-border)] px-3 py-2 text-sm focus:border-[var(--crr-red)] focus:ring-[var(--crr-red)]">
               <option value="" disabled>Selectează voluntar...</option>
               {volunteers.map(v => <option key={v.id} value={v.id}>{v.firstName} {v.lastName} ({v.email})</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descriere Task</label>
-            <textarea required rows={3} value={description} onChange={e => setDescription(e.target.value)} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-black" placeholder="ex: Ocupare pozitie intrare..."></textarea>
+            <label className="mb-1 block text-sm font-medium text-[var(--crr-ink)]">Descriere Task</label>
+            <textarea required rows={3} value={description} onChange={e => setDescription(e.target.value)} className="w-full rounded border border-[var(--crr-border)] px-3 py-2 text-sm focus:border-[var(--crr-red)] focus:ring-[var(--crr-red)]" placeholder="ex: Ocupare pozitie intrare..."></textarea>
           </div>
           <div className="pt-4 flex justify-end gap-3">
-            <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded">Anulează</button>
-            <button type="submit" disabled={isLoading} className="flex items-center px-4 py-2 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded disabled:opacity-50">
-              {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Salvează
+            <button type="button" onClick={onClose} className="rounded bg-[var(--crr-red-softer)] px-4 py-2 text-sm font-medium text-[var(--crr-red-dark)] transition-colors hover:bg-[var(--crr-red-soft)]">Anulează</button>
+            <button type="submit" disabled={isLoading} className="flex items-center rounded bg-[var(--crr-red)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--crr-red-dark)] disabled:opacity-50">
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null} Salvează
             </button>
           </div>
         </form>
