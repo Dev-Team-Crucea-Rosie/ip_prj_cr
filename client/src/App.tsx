@@ -1,20 +1,38 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import AppLayout from './components/layout/AppLayout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import VolunteerDashboard from './pages/volunteer/Dashboard';
-import QRScanner from './pages/volunteer/QRScanner';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import AppLayout from "./components/layout/AppLayout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import VolunteerDashboard from "./pages/volunteer/Dashboard";
+import QRScanner from "./pages/volunteer/QRScanner";
 
-import AdminDashboard from './pages/admin/Dashboard';
+import AdminDashboard from "./pages/admin/Dashboard";
+import QREvents from "./pages/admin/QREvents";
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-const ProtectedRoute = ({ children, requireCoordinator = false, requireVolunteer = false }: { children: ReactNode, requireCoordinator?: boolean, requireVolunteer?: boolean }) => {
+const ProtectedRoute = ({
+  children,
+  requireCoordinator = false,
+  requireVolunteer = false,
+}: {
+  children: ReactNode;
+  requireCoordinator?: boolean;
+  requireVolunteer?: boolean;
+}) => {
   const { isAuthenticated, user, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div className="h-screen w-screen flex items-center justify-center">Se incarca...</div>;
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        Se incarca...
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
@@ -44,28 +62,50 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
+
           {/* Rute sub un singur Layout Protejat */}
-          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-            
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             {/* Rute Voluntar */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute requireVolunteer={true}>
-                <VolunteerDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/scan" element={
-              <ProtectedRoute requireVolunteer={true}>
-                <QRScanner />
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute requireVolunteer={true}>
+                  <VolunteerDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/scan"
+              element={
+                <ProtectedRoute requireVolunteer={true}>
+                  <QRScanner />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Rute Coordonator */}
-            <Route path="/coordinator" element={
-              <ProtectedRoute requireCoordinator={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/coordinator"
+              element={
+                <ProtectedRoute requireCoordinator={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/coordinator/qr-events"
+              element={
+                <ProtectedRoute requireCoordinator={true}>
+                  <QREvents />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </AuthProvider>
