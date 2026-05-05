@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
 async function createTask({ volunteerId, eventId, description, status }) {
   const query = `
@@ -14,7 +14,11 @@ async function createTask({ volunteerId, eventId, description, status }) {
 async function getTasksByVolunteerId(volunteerId) {
   const query = `
     SELECT t.*, e.name as event_name, e.date as event_date, e.location as event_location,
-           p.id as project_id, p.name as project_name
+           p.id as project_id, p.name as project_name,
+           EXISTS (
+             SELECT 1 FROM attendance a 
+             WHERE a.event_id = t.event_id AND a.volunteer_id = t.volunteer_id
+           ) as is_present
     FROM tasks t
     JOIN events e ON t.event_id = e.id
     JOIN projects p ON e.project_id = p.id
@@ -50,5 +54,5 @@ module.exports = {
   createTask,
   getTasksByVolunteerId,
   getAllTasks,
-  getTasksByEventId
+  getTasksByEventId,
 };

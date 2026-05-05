@@ -51,6 +51,16 @@ export default function QRScanner() {
         }, 2500);
       } else {
         const errorData = await response.json().catch(() => ({}));
+        
+        // Dacă codul a fost deja scanat (din teste anterioare), îl considerăm un success vizual
+        if (errorData.message === "Ai scanat deja acest cod.") {
+          setScanState("success");
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2500);
+          return;
+        }
+
         throw new Error(
           errorData.message ||
             "Eroare la scanarea codului QR (Răspuns invalid de la server).",
