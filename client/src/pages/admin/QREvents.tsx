@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { QRCodeSVG } from "qrcode.react";
+import { Download } from "lucide-react";
 
 interface Event {
   id: string;
@@ -18,6 +19,24 @@ interface Attendance {
   scan_date: string;
   scan_time: string;
 }
+
+const escapeHtml = (value: string | null | undefined) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+const formatDate = (value: string) =>
+  value ? new Date(value).toLocaleDateString("ro-RO") : "";
+
+const sanitizeFileName = (value: string) =>
+  value
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, "-")
+    .replace(/\s+/g, "_")
+    .slice(0, 80);
 
 export default function QRGeneration() {
   const { user } = useAuth();
@@ -103,6 +122,70 @@ export default function QRGeneration() {
     }
   };
 
+  const handleDownloadAttendance = (selectedEvent: Event) => {
+    const rows = attendance
+      .map(
+        (a, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${escapeHtml(`${a.first_name} ${a.last_name}`)}</td>
+            <td>${escapeHtml(a.email)}</td>
+            <td>${escapeHtml(formatDate(a.scan_date))}</td>
+            <td>${escapeHtml(a.scan_time)}</td>
+          </tr>`,
+      )
+      .join("");
+
+    const workbook = `
+      <html xmlns:o="urn:schemas-microsoft-com:office:office"
+            xmlns:x="urn:schemas-microsoft-com:office:excel"
+            xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+          <meta charset="UTF-8" />
+          <!--[if gte mso 9]>
+          <xml>
+            <x:ExcelWorkbook>
+              <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                  <x:Name>Prezenta</x:Name>
+                  <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                </x:ExcelWorksheet>
+              </x:ExcelWorksheets>
+            </x:ExcelWorkbook>
+          </xml>
+          <![endif]-->
+        </head>
+        <body>
+          <table>
+            <thead>
+              <tr><th colspan="5">${escapeHtml(selectedEvent.name)}</th></tr>
+              <tr><th colspan="5">${escapeHtml(selectedEvent.location)} - ${escapeHtml(formatDate(selectedEvent.date))}</th></tr>
+              <tr>
+                <th>Nr.</th>
+                <th>Nume voluntar</th>
+                <th>Email</th>
+                <th>Data scanării</th>
+                <th>Ora scanării</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </body>
+      </html>`;
+
+    const blob = new Blob([workbook], {
+      type: "application/vnd.ms-excel;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `lista-prezenta-${sanitizeFileName(selectedEvent.name) || selectedEvent.id}.xls`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) return <div className="p-4">Se incarca...</div>;
 
   return (
@@ -176,9 +259,22 @@ export default function QRGeneration() {
                   </div>
                 )}
 
-                <h4 className="text-lg font-semibold text-[var(--crr-ink)] mb-3">
-                  Lista Prezență
-                </h4>
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h4 className="text-lg font-semibold text-[var(--crr-ink)]">
+                    Lista Prezență
+                  </h4>
+                  {(user?.isCoordinator || user?.isAdministrator) && (
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadAttendance(selectedEvent)}
+                      disabled={attendanceLoading || attendance.length === 0}
+                      className="inline-flex items-center gap-2 rounded-lg border border-[var(--crr-border)] bg-white px-3 py-2 text-sm font-medium text-[var(--crr-ink)] transition-colors hover:border-[var(--crr-red)] hover:text-[var(--crr-red)] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <Download className="h-4 w-4" />
+                      Descarcă Excel
+                    </button>
+                  )}
+                </div>
                 {attendanceLoading ? (
                   <p className="text-sm text-[var(--crr-muted)]">
                     Se încarcă lista de prezență...
